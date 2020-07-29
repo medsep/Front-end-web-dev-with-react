@@ -15,8 +15,6 @@ class Menu extends Component {
                 this.setState({selectedDish: dish});
             }
         
-    
-
             //this is the main render method   
             render() {
                 const menu = this.props.dishes.map((dish) => {
