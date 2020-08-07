@@ -5,6 +5,7 @@ import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import {Control, LocalForm, Errors} from 'react-redux-form';
 import {Link} from 'react-router-dom';
 import {Loading} from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 const required = (val) => val && val. length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -17,7 +18,6 @@ class CommentForm extends Component{
             isModalOpen: false
         };
         this.toggleModal = this.toggleModal.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     toggleModal(){
@@ -31,48 +31,50 @@ class CommentForm extends Component{
         this.props.addComment(this.props.dishId, values.rating, values.author, values.message);
     }
 
-    validate(yourname){
+    validate(author){
         const errors={
-            yourname:'',
+            author:'',
         };
-        if (this.state.touched.yourname && yourname.length < 3)
-        errors.yourname = 'First Name should be >= 3 characters';
-        else if (this.state.touched.yourname && yourname.length > 15)
-        errors.yourname = 'First Name should be <= 15 characters';
+        if (this.state.touched.author && author.length < 3)
+        errors.author = 'First Name should be >= 3 characters';
+        else if (this.state.touched.author && author.length > 15)
+        errors.author = 'First Name should be <= 15 characters';
 
         return errors;
     }
     
         render(){
             return(
-                <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                <React.Fragment>
+                    
                 <Button  outline color="secondary" onClick={this.toggleModal}>
                 <span className="fa fa-pencil fa-lg"></span>Submit Comment</Button>
 
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                 <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                 <ModalBody>
-                    <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-                            <FormGroup>
+                <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+
+                                <FormGroup>
                                 <Label htmlFor="rating">Rating</Label>
                                 <Row className="form-group">
                                 <Col md={12}>
                                 <Control.select model=".rating" name="rating" className="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    </Control.select>
-                                    </Col>
-                                    </Row>
-                            </FormGroup>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                </Control.select>
+                                </Col>
+                                </Row>
+                                </FormGroup>
                             
                             <FormGroup>
                             <Label htmlFor="author" >Your Name</Label>
                             <Row className="form-group">
                             <Col md={12}>
-                                    <Control.text model=".author " id="author " name="author"
+                                    <Control.text model=".author" id="author" name="author"
                                         placeholder="Your Name" className="form-control" 
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
@@ -88,9 +90,9 @@ class CommentForm extends Component{
                                          }}/>
                                 </Col>
                                 </Row>
-                        </FormGroup>
+                                </FormGroup>
 
-                        <FormGroup>
+                                <FormGroup>
                         <Label htmlFor="message">Comment</Label>
                             <Row className="form-group">
                                 <Col md={12}>
@@ -98,12 +100,12 @@ class CommentForm extends Component{
                                     rows="6" className="form-control"/>
                                 </Col>
                                 </Row>
-                            </FormGroup>
+                                </FormGroup>
                         <Button type="submit" value="submit" color="primary" className="primary">Submit</Button>
                     </LocalForm>
                 </ModalBody>
                 </Modal>
-                </LocalForm>
+                </React.Fragment>
             );
         
     }
@@ -114,7 +116,7 @@ class CommentForm extends Component{
         if (dish != null)
             return (
                 <Card className="col-12 col-md-5 m-1">
-                    <CardImg width="100%" src={dish.image} alt={dish.name} />
+                    <CardImg top src={baseUrl + dish.image} alt={dish.name} />
                     <CardBody>
                         <CardTitle>{dish.name}</CardTitle>
                         <CardText>{dish.description}</CardText>
@@ -136,7 +138,7 @@ class CommentForm extends Component{
                         <ul className="list-unstyled">
                             <li>
                                 <p>{comment.comment}</p>
-                                <p>-- {comment.author} , {new Intl.DateTimeFormat('en-AU',{year:'numeric', month:'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                                <p>-- {comment.rating} , {comment.author} , {new Intl.DateTimeFormat('en-AU',{year:'numeric', month:'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
                                 
                              </li>                               
                         </ul>
