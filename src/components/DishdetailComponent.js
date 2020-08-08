@@ -28,7 +28,7 @@ class CommentForm extends Component{
 
     handleSubmit(values){
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.message);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.message);
     }
 
     validate(author){
@@ -129,7 +129,7 @@ class CommentForm extends Component{
             );
     }
 
-    function RenderComments({comments, addComment, dishId}) {
+    function RenderComments({comments, postComment, dishId}) {
         if (comments.length != 0) {
             return (
                 <div className="col-12 col-md-5 m-1">
@@ -138,13 +138,12 @@ class CommentForm extends Component{
                         <ul className="list-unstyled">
                             <li>
                                 <p>{comment.comment}</p>
-                                <p>-- {comment.rating} , {comment.author} , {new Intl.DateTimeFormat('en-AU',{year:'numeric', month:'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
-                                
+                                <p>-- {comment.rating} , {comment.author} , {new Date(comment.date).toLocaleDateString('default', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
                              </li>                               
                         </ul>
                     )
                     )}
-                    <CommentForm dishId={dishId} addComment={addComment}/>
+                    <CommentForm dishId={dishId} postComment={postComment}/>
                 </div>
             );
         }
@@ -190,7 +189,7 @@ class CommentForm extends Component{
                 <div className="row">
                     <RenderDish dish= {props.dish} />
                    <RenderComments comments ={props.comments}
-                   addComment={props.addComment}
+                   postComment={props.postComment}
                    dishId={props.dish.id} />
                 </div>
             </div>
