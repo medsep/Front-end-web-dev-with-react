@@ -6,6 +6,7 @@ import {Control, LocalForm, Errors} from 'react-redux-form';
 import {Link} from 'react-router-dom';
 import {Loading} from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 const required = (val) => val && val. length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -116,33 +117,36 @@ class CommentForm extends Component{
         if (dish != null)
             return (
                 <Card className="col-12 col-md-5 m-1">
+                    <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)'}}>
                     <CardImg top src={baseUrl + dish.image} alt={dish.name} />
                     <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                        </CardBody>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
+                    </CardBody>                
+                    </FadeTransform>
                 </Card>
-            );
-        else
-            return (
-                <div></div>
             );
     }
 
     function RenderComments({comments, postComment, dishId}) {
-        if (comments.length != 0) {
+        if (comments != null) {
             return (
                 <div className="col-12 col-md-5 m-1">
                     <h4>Comments</h4>
-                    {comments.map(comment => (
-                        <ul className="list-unstyled">
-                            <li>
+                    <ul className="list-unstyled">
+                        <Stagger in>
+                    {comments.map(comment => {
+                        return (
+                            <Fade in>
+                            <li key = {comment.id}>
                                 <p>{comment.comment}</p>
                                 <p>-- {comment.rating} , {comment.author} , {new Date(comment.date).toLocaleDateString('default', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
-                             </li>                               
-                        </ul>
-                    )
-                    )}
+                            </li>
+                            </Fade>                               
+                                );
+                   })}
+                        </Stagger>
+                   </ul>
                     <CommentForm dishId={dishId} postComment={postComment}/>
                 </div>
             );

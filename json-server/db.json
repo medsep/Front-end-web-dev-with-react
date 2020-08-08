@@ -225,6 +225,29 @@
       "comment": "hrdddddddddddd",
       "date": "2020-08-08T12:08:58.733Z",
       "id": 22
+    },
+    {
+      "dishId": 1,
+      "author": "Mehdi Sepahvand",
+      "comment": "scfaffaaffsfasaf",
+      "date": "2020-08-08T13:39:18.351Z",
+      "id": 23
+    },
+    {
+      "dishId": 1,
+      "rating": "2",
+      "author": "Mehdi Sepahvand",
+      "comment": "casccc",
+      "date": "2020-08-08T14:48:17.584Z",
+      "id": 24
+    },
+    {
+      "dishId": 3,
+      "rating": "3",
+      "author": "Mehdi Sepahvand",
+      "comment": "asfsgggg",
+      "date": "2020-08-08T15:04:52.599Z",
+      "id": 25
     }
   ],
   "promotions": [
