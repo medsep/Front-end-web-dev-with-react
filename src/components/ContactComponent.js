@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {Breadcrumb, BreadcrumbItem, Button, Label, Input, Col, Row} from 'reactstrap';
 import {Link} from 'react-router-dom';
+import {Loading} from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 import {Control, Form, Errors, actions} from 'react-redux-form';
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 const required = (val) => val && val. length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -18,9 +21,9 @@ class Contact extends Component {
     }
 
     handleSubmit(values){
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
-        this.props.resetFeedbackForm();
+        console.log('Thank you for your feedback! ' + JSON.stringify(values));
+        alert('Thank you for your feedback!' + JSON.stringify(values));
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.message, values.agree, values.contactType);
     }
 
     validate(firstname, lastname, telnum, email){
@@ -51,7 +54,7 @@ class Contact extends Component {
         return errors;
     }
 
-    render(){
+    render(postFeedback, firstname, lastname, telnum, email, message, agree, contactType){
         return(
             <div className="container">
                         <div className="row">
@@ -96,6 +99,8 @@ class Contact extends Component {
                     </div>
                     <div className="col-12 col-md-9">
                         <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
+                        <Stagger in>
+                        <Fade in>
                         <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
@@ -204,6 +209,8 @@ class Contact extends Component {
                                     </Button>
                                     </Col>
                             </Row>
+                            </Fade>
+                            </Stagger>
                         </Form>
                     </div>
                 </div>
